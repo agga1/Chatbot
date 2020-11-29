@@ -9,7 +9,7 @@
     <!-- greeting -->
     <category>
         <pattern>CZESC</pattern>
-        <template>Dzien dobry, witam w salonie fryzjerskim ABC. W czym moge pomoc? Rezerwacja? Zlozenie skargi?</template>
+        <template><get name="topic"/> Dzien dobry, witam w salonie fryzjerskim ABC. W czym moge pomoc? Rezerwacja? Zlozenie skargi?</template>
     </category>
     <category><pattern>DZIEN DOBRY</pattern><template><srai>CZESC</srai></template>
     </category>
@@ -82,11 +82,12 @@
         <pattern>*</pattern>
         <template>Przepraszam, nie zrozumialam. O jaka usluge Panstwu chodzi? Rezerwacja, zlozenie skargi, czy przedstawienie oferty?</template>
     </category>
-
     <topic name="OFERTA">
         <category><pattern>TAK</pattern><template><srai>REZERWACJA</srai></template></category>
         <category><pattern>*</pattern><template>Nie rozumiem. Czy dokonac rezerwacji? (tak / nie).</template></category>
-        <category><pattern>NIE</pattern><template>Rozumiem, moge pomoc w czyms jeszcze?</template></category>
+        <category><pattern>NIE</pattern><template><think><set name="topic">GLOWNY</set></think>Rozumiem, moge pomoc w czyms jeszcze?</template></category>
+    </topic>
+    <topic name="GLOWNY">
     </topic>
     <topic name="SKARGA">
         <category><pattern>KASIA</pattern><template><srai>GOTO ZAPIS KASIA SKARGA</srai></template></category>
@@ -101,17 +102,18 @@
         <category><pattern>_ ANETA</pattern><template><srai>ANETA</srai></template></category>
         <category><pattern>_ MAREK</pattern><template><srai>MAREK</srai></template></category>
         <category><pattern>_ ADAM</pattern><template><srai>ADAM</srai></template></category>
-        <category><pattern>_ ZREZYGNOWAC </pattern><template><srai>REZYGNUJE</srai></template></category>
+        <category><pattern>_ ZREZYGNOWAC</pattern><template><srai>REZYGNUJE</srai></template></category>
         <category><pattern>_ ZREZYGNOWAC *</pattern><template><srai>REZYGNUJE</srai></template></category>
         <category><pattern>REZYGNUJE *</pattern><template><srai>REZYGNUJE</srai></template></category>
-        <category><pattern>REZYGNUJE</pattern><template>Proces skladania skargi zostal przerwany.
+        <category><pattern>_ REZYGNUJE</pattern><template><srai>REZYGNUJE</srai></template></category>
+        <category><pattern>REZYGNUJE</pattern><template><think><set name="topic">GLOWNY</set></think>Proces skladania skargi zostal przerwany.
         <srai>CZESC</srai></template></category>
         <category><pattern>GOTO ZAPIS * SKARGA</pattern>
             <template><think><set name="skargapracownik"><star /></set></think>Co jest przyczyna skargi?</template>
         </category>
         <category><pattern>*</pattern>
             <that>CO JEST PRZYCZYNA SKARGI</that>
-            <template> [save complaint] <get name="skargapracownik"/>| <star/></template>
+            <template><think><set name="topic">GLOWNY</set></think>[save complaint] <get name="skargapracownik"/>| <star/></template>
         </category>
         <category><pattern>*</pattern><template>Przepraszam, nie zrozumialam. Na kogo ma byc skarga? Moga Panstwo rowniez zrezygnowac ze zlozenia skargi.</template></category>
 
@@ -123,66 +125,55 @@
         <category><pattern>JESTEM MEZCZYZNA</pattern><template><srai>M</srai></template></category>
         <category><pattern>K</pattern><template><think><set name="plec">K</set></think><srai>GOTO K I PRZEJDZ</srai></template></category>
         <category><pattern>M</pattern><template><think><set name="plec">M</set></think><srai>GOTO M I PRZEJDZ</srai></template></category>
-        <category><pattern>GOTO * I PRZEJDZ</pattern><template><think><set name="topic">WYBORFRYZJERA</set></think><get name="plec"/>
-        Czy <condition><li name="plec" value="M">byl Pan</li><li name="plec" value="K">byla Pani</li>
-            </condition> juz u nas wczesniej?</template></category>
+        <category><pattern>GOTO * I PRZEJDZ</pattern><template><think><set name="topic">WYBORFRYZJERA</set></think><srai>GOTO WYBOR</srai>
+        </template></category>
         <category><pattern>*</pattern><template>Nie zrozumialam. napisz odpowiednio "M" lub "K"</template></category>
     </topic>
     <topic name="WYBORFRYZJERA">
-        <category>
-            <pattern>TAK</pattern>
-            <template><condition>
-            <li name="pierwszy_raz" value="TAK"><srai>DOBRZE</srai><think><set name="pierwszy_raz">NIE</set></think></li>
-            <li>[szukamy w bazie]. O! Widze ze zwykle chodzi Pan<condition name="plec" value="K">i</condition> do <set name="fryzjer">Pani Kasi</set>. 
-            <srai>DOBRZE</srai></li>
-            </condition>
-            </template>
-        </category>
-        <category>
-            <pattern>NIE</pattern>
-            <template><think><set name="pierwszy_raz">TAK</set></think>W takim razie polecamy umowic sie do <set name="fryzjer"><random>
+        <category><pattern>GOTO WYBOR</pattern><template>Polecamy umowic sie do <set name="fryzjer"><random>
             <li>Pani Kasi</li>
             <li>Pani Anety</li>
             <li>Pana Marka</li>
             <li>Pana Adama</li>
-            </random></set>, dobrze?
+            </random></set>, dobrze?</template>
+        </category>
+        <category>
+            <pattern>NIE</pattern>
+            <template>W takim razie <srai>GOTO WYBOR</srai>
             </template>
         </category>
-        <category><pattern>OK</pattern><template><srai>DOBRZE</srai></template>
-        </category>
+        <category><pattern>OK</pattern><template><srai>DOBRZE</srai></template></category>
+        <category><pattern>TAK</pattern><template><srai>DOBRZE</srai></template></category>
         <category>
             <pattern>DOBRZE</pattern>
             <template>Juz patrze na grafik <get name="fryzjer"/>.
             <think><set name="topic">WYBORTERMINU</set></think><srai>GOTO SZUKANIE TERMINU</srai>
             </template>
         </category>
+        <category><pattern>*</pattern><template>Nie rozumiem. Odpowiada Panstwu zaproponowany fryzjer?</template></category>
     </topic>
     <topic name="WYBORTERMINU">
         <category>
             <pattern>GOTO SZUKANIE TERMINU</pattern>
-            <template>moge zaoferowac termin : <set name="termin"><random>
-            <li>przyszly poniedzialek</li>
-            <li>przyszly wtorek</li>
-            <li>przyszly czwartek</li>
-            <li>przyszly piatek</li></random></set>, dobrze?
+            <template>[propose date] <get name="fryzjer"/>
             </template>
         </category>
         <category><pattern>NIE</pattern><template>W takim razie <srai>GOTO SZUKANIE TERMINU</srai></template></category>
         <category><pattern>OK</pattern><template><srai>TAK</srai></template></category>
         <category><pattern>DOBRZE</pattern><template><srai>TAK</srai></template></category>
-        <category><pattern>TAK</pattern><template>Swietnie! Wybrano <get name="termin"/>
+        <category><pattern>TAK</pattern><template>Swietnie!
             Teraz wystarczy podac dane osobowe. Prosze podac imie i nazwisko<think><set name="topic">DANE</set></think></template></category>
         <category><pattern>*</pattern><template>Nie rozumiem. <srai>GOTO SZUKANIE TERMINU</srai></template></category>
     </topic>
     <topic name="DANE">
         <category>
             <pattern>*</pattern>
-            <template><set name="dane"><star/></set> Jestes pewny?
+            <template>Wpisales: <set name="dane"><star/></set>. Jestes pewny?
             </template>
         </category>
         <category><pattern>NIE</pattern><template>Wpisz imie i nazwisko jeszcze raz: </template></category>
         <category><pattern>OK</pattern><template><srai>TAK</srai></template></category>
-        <category><pattern>TAK</pattern><template>[book visit] <get name="dane"/>|<get name="fryzjer"/>|<get name="termin"/> </template></category>
+        <category><pattern>TAK</pattern><template><think><set name="topic">GLOWNY</set></think>[book visit] <get name="dane"/>|<get name="fryzjer"/></template></category>
     </topic>
 
 </aiml>

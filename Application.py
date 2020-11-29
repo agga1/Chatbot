@@ -9,7 +9,6 @@ class GUI:
         self.root = root
         self.chat_view = None
         self.enter_text_widget = None
-        self.join_button = None
         self.init_gui()
         self.kernel = KernelManager()
 
@@ -21,8 +20,9 @@ class GUI:
 
     def display_chat_box(self):
         frame = Frame()
-        Label(frame, text='ABC Hair Salon ChatBot', font=("Bell mt", 14)).pack(side='top', anchor='w')
-        self.chat_view = Text(frame, width=60, height=10, font=("Roboto", 12))
+        Label(frame, text='ABC Hair Salon ChatBot', font=("Bell mt", 14)).pack(side='top', anchor='w', padx=20, pady=5)
+        self.chat_view = Text(frame, width=60, height=10, font=("Calibri", 12))
+        self.chat_view.tag_configure("user", foreground="#6a8bc4")
         scrollbar = Scrollbar(frame, command=self.chat_view.yview, orient=VERTICAL)
         self.chat_view.config(yscrollcommand=scrollbar.set)
         self.chat_view.bind('<KeyPress>', lambda e: 'break')
@@ -32,24 +32,27 @@ class GUI:
 
     def display_chat_entry_box(self):
         frame = Frame()
-        Label(frame, text='Type your message:', font=("Roboto", 12)).pack(side='top', anchor='w')
-        self.enter_text_widget = Text(frame, width=60, height=1, font=("Serif", 12))
-        self.enter_text_widget.pack(side='left', pady=15)
+        Label(frame, text='Type your message:', font=("Calibri", 12)).pack(side='top', anchor='w', padx=10, pady=0)
+        self.enter_text_widget = Text(frame, width=60, height=1, font=("Calibri", 12))
+        self.enter_text_widget.pack(side='left', padx=10, pady=5)
         self.enter_text_widget.bind('<Return>', self.on_enter)
         frame.pack(side='top')
 
     def on_enter(self, event):
         user_input = self.get_user_input()
         kernel_repsonse = self.kernel.handle_kernel_response(user_input)
-        self.display_message(user_input, "user")
+        self.display_message(user_input, "user", True)
         self.display_message(kernel_repsonse, "bot")
 
     def get_user_input(self):
         return self.enter_text_widget.get(1.0, 'end').strip()
 
-    def display_message(self, text, author):
+    def display_message(self, text, author, higlight=False):
         msg_formatted = f"{author}> {text}\n"
+        start_ind = self.chat_view.index('insert')
         self.chat_view.insert('end', msg_formatted)
+        if higlight:
+            self.chat_view.tag_add("user", start_ind, start_ind.replace(".0", ".end"))
         self.chat_view.yview(END)
         self.clear_enter_widget()
         return 'break'
