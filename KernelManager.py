@@ -59,8 +59,6 @@ class KernelManager:
         return f"Proponuje termin {self.cached_date}, dobrze?"
 
     def get_random_free_date(self, barber_name, span_days=14):
-        print("bookings", self.bookings_df)
-        print("barber name", barber_name)
         taken = self.bookings_df[self.bookings_df['barber'] == barber_name]['date'].dt.date
         today = date.today()
         taken_14days = taken[(taken>today) & (taken <= today + timedelta(days=span_days))].values

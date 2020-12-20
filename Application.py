@@ -1,4 +1,4 @@
-from tkinter import Tk, Frame, Scrollbar, Label, END, Text, VERTICAL
+from tkinter import Tk, Frame, Scrollbar, Label, END, Text, VERTICAL, WORD
 
 from KernelManager import KernelManager
 
@@ -21,7 +21,7 @@ class GUI:
     def display_chat_box(self):
         frame = Frame()
         Label(frame, text='ABC Hair Salon ChatBot', font=("Bell mt", 14)).pack(side='top', anchor='w', padx=20, pady=5)
-        self.chat_view = Text(frame, width=60, height=10, font=("Calibri", 12))
+        self.chat_view = Text(frame, width=60, height=10, font=("Calibri", 12), wrap=WORD)
         self.chat_view.tag_configure("user", foreground="#6a8bc4")
         scrollbar = Scrollbar(frame, command=self.chat_view.yview, orient=VERTICAL)
         self.chat_view.config(yscrollcommand=scrollbar.set)

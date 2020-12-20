@@ -9,12 +9,13 @@
     <!-- greeting -->
     <category>
         <pattern>CZESC</pattern>
-        <template><get name="topic"/> Dzien dobry, witam w salonie fryzjerskim ABC. W czym moge pomoc? Rezerwacja? Zlozenie skargi?</template>
+        <template><get name="topic"/> Dzien dobry, witam w salonie fryzjerskim ABC.
+            W czym moge pomoc? Rezerwacja? Zlozenie skargi?</template>
     </category>
-    <category><pattern>DZIEN DOBRY</pattern><template><srai>CZESC</srai></template>
-    </category>
-    <category><pattern>WITAJ</pattern><template><srai>CZESC</srai></template>
-    </category>
+    <category><pattern>DZIEN DOBRY</pattern><template><srai>CZESC</srai></template></category>
+    <category><pattern>HEJ</pattern><template><srai>CZESC</srai></template></category>
+    <category><pattern>WITAM</pattern><template><srai>CZESC</srai></template></category>
+    <category><pattern>WITAJ</pattern><template><srai>CZESC</srai></template></category>
     <category><pattern>DOBRY WIECZOR</pattern><template><srai>CZESC</srai></template>
     </category>
     <category>
@@ -24,36 +25,32 @@
             Prosimy podac plec:
         </template>
     </category>
-    <category><pattern>_ ZAREZERWOWAC _</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
-    <category><pattern>_ REZERWACJI</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
-    <category><pattern>_ REZERWACJI _</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
-    <category><pattern>_ REZERWACJE</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
-    <category><pattern>_ UMOWIC _</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
-    <category><pattern>R</pattern><template><srai>REZERWACJA</srai></template>
-    </category>
+    <category><pattern>_ ZAREZERWOWAC *</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ REZERWACJI</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ REZERWACJI *</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ REZERWACJE</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ REZERWACJE *</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ UMOWIC</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>_ UMOWIC *</pattern><template><srai>REZERWACJA</srai></template></category>
+    <category><pattern>R</pattern><template><srai>REZERWACJA</srai></template></category>
     <category>
         <pattern>SKARGA</pattern>
         <template><think><set name="topic">SKARGA</set></think>
             Juz zajmiemy sie skarga.
             Obecnie pracuje u nas:
-            Pani Kasia
-            Pani Aneta
-            Pan Marek
-            Pan Adam
+            Pani Kasia,
+            Pani Aneta,
+            Pan Marek,
+            Pan Adam.
             Na kogo chcialbys zlozyc skarge?
         </template>
     </category>
-    <category><pattern>_ SKARGE</pattern><template><srai>SKARGA</srai></template>
-    </category>
-    <category><pattern>_ ZAZALENIE</pattern><template><srai>SKARGA</srai></template>
-    </category>
-    <category><pattern>_ SKARGE _</pattern><template><srai>SKARGA</srai></template>
-    </category>
+    <category><pattern>_ SKARGE</pattern><template><srai>SKARGA</srai></template></category>
+    <category><pattern>_ SKARGE *</pattern><template><srai>SKARGA</srai></template></category>
+    <category><pattern>_ SKARGI</pattern><template><srai>SKARGA</srai></template></category>
+    <category><pattern>_ SKARGI *</pattern><template><srai>SKARGA</srai></template></category>
+    <category><pattern>_ ZAZALENIE</pattern><template><srai>SKARGA</srai></template></category>
+    <category><pattern>_ ZAZALENIE *</pattern><template><srai>SKARGA</srai></template></category>
     <category><pattern>S</pattern><template><srai>SKARGA</srai></template>
     </category>
     <category>
@@ -67,14 +64,12 @@
             Czy interesuje Pana/Pania zrobienie rezerwacji?
         </template>
     </category>
-    <category><pattern>_ OFERTE</pattern><template><srai>OFERTA</srai></template>
-    </category>
-    <category><pattern>_ OFERTE _</pattern><template><srai>OFERTA</srai></template>
-    </category>
-    <category><pattern>_ OFERUJECIE</pattern><template><srai>OFERTA</srai></template>
-    </category>
-    <category><pattern>_ OFERTY</pattern><template><srai>OFERTA</srai></template>
-    </category>
+    <category><pattern>_ OFERTE</pattern><template><srai>OFERTA</srai></template></category>
+    <category><pattern>_ OFERTE *</pattern><template><srai>OFERTA</srai></template></category>
+    <category><pattern>_ OFERUJECIE</pattern><template><srai>OFERTA</srai></template></category>
+    <category><pattern>_ OFERUJECIE *</pattern><template><srai>OFERTA</srai></template></category>
+    <category><pattern>_ OFERTY</pattern><template><srai>OFERTA</srai></template></category>
+    <category><pattern>_ OFERTY *</pattern><template><srai>OFERTA</srai></template></category>
     <category><pattern>O</pattern><template><srai>OFERTA</srai></template>
     </category>
 
@@ -84,8 +79,9 @@
     </category>
     <topic name="OFERTA">
         <category><pattern>TAK</pattern><template><srai>REZERWACJA</srai></template></category>
+        <category><pattern>NIE</pattern><template><think>
+            <set name="topic">GLOWNY</set></think>Rozumiem, moge pomoc w czyms jeszcze?</template></category>
         <category><pattern>*</pattern><template>Nie rozumiem. Czy dokonac rezerwacji? (tak / nie).</template></category>
-        <category><pattern>NIE</pattern><template><think><set name="topic">GLOWNY</set></think>Rozumiem, moge pomoc w czyms jeszcze?</template></category>
     </topic>
     <topic name="GLOWNY">
     </topic>
@@ -115,7 +111,8 @@
             <that>CO JEST PRZYCZYNA SKARGI</that>
             <template><think><set name="topic">GLOWNY</set></think>[save complaint] <get name="skargapracownik"/>| <star/></template>
         </category>
-        <category><pattern>*</pattern><template>Przepraszam, nie zrozumialam. Na kogo ma byc skarga? Moga Panstwo rowniez zrezygnowac ze zlozenia skargi.</template></category>
+        <category><pattern>*</pattern><template>Przepraszam, nie zrozumialam.
+            Na kogo ma byc skarga? Moga Panstwo rowniez zrezygnowac ze zlozenia skargi.</template></category>
 
     </topic>
     <topic name="PLEC">
@@ -147,7 +144,7 @@
         <category>
             <pattern>DOBRZE</pattern>
             <template>Juz patrze na grafik <get name="fryzjer"/>.
-            <think><set name="topic">WYBORTERMINU</set></think><srai>GOTO SZUKANIE TERMINU</srai>
+                <think><set name="topic">WYBORTERMINU</set></think><srai>GOTO SZUKANIE TERMINU</srai>
             </template>
         </category>
         <category><pattern>*</pattern><template>Nie rozumiem. Odpowiada Panstwu zaproponowany fryzjer?</template></category>
@@ -173,7 +170,8 @@
         </category>
         <category><pattern>NIE</pattern><template>Wpisz imie i nazwisko jeszcze raz: </template></category>
         <category><pattern>OK</pattern><template><srai>TAK</srai></template></category>
-        <category><pattern>TAK</pattern><template><think><set name="topic">GLOWNY</set></think>[book visit] <get name="dane"/>|<get name="fryzjer"/></template></category>
+        <category><pattern>TAK</pattern><template><think>
+            <set name="topic">GLOWNY</set></think>[book visit] <get name="dane"/>|<get name="fryzjer"/></template></category>
     </topic>
 
 </aiml>
