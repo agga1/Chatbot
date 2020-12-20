@@ -5,15 +5,10 @@
     <category>
 
         <!-- Pattern to match in user input -->
-        <!-- If user enters "LOAD AIML B" -->
-        <pattern>LOAD AIML B</pattern>
+        <pattern>LOAD AIML</pattern>
 
-        <!-- Template is the response to the pattern -->
-        <!-- This learn an aiml file -->
         <template>
-            <learn>a2capitalized.aiml</learn>
-            <!-- You can add more aiml files here -->
-            <!--<learn>more_aiml.aiml</learn>-->
+            <learn>logic.aiml</learn>
         </template>
 
     </category>

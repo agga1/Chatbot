@@ -9,7 +9,7 @@ class KernelManager:
     def __init__(self):
         self.kernel = aiml.Kernel()
         self.kernel.learn("std-startup.xml")
-        self.kernel.respond("load aiml b")
+        self.kernel.respond("load aiml")
         self.complaints_filename = "complaints.csv"
         self.bookings_df = self.load_bookings("bookings.csv")
         self.cached_date = None
